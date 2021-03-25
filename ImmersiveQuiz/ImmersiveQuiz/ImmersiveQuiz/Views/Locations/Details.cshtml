@@ -1,0 +1,32 @@
+﻿@model ImmersiveQuiz.Models.Location
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Location</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FilePath)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FilePath)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a class="badge large-badge bg-secondary text-light" asp-action="Index">Back to List</a> |
+    <a class="badge large-badge bg-primary text-light" asp-action="Edit" asp-route-id="@Model.LocationId">Edit</a>
+    <a class="badge large-badge bg-success text-light" asp-action="Create" asp-controller="Questions" asp-route-locationId="@Model.LocationId">Add Question</a>
+</div>
+@await Component.InvokeAsync("QuestionList", new { locationId = Model.LocationId.ToString(), search = ""}) 

@@ -1,0 +1,21 @@
+﻿@model ImmersiveQuiz.Models.QuestionLocationViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<form asp-controller="QuestionList" asp-action="InvokeAsync" method="get">
+    <p>
+        <select asp-for="LocationId" asp-items="Model.Locations">
+            <option value="">All</option>
+        </select>
+        Question: <input type="text" asp-for="Search" />
+        <input type="submit" value="Find" />
+    </p>
+</form>
+
