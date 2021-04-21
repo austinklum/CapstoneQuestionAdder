@@ -1,0 +1,24 @@
+﻿@model IQueryable<Answer>
+@(Html
+    .Grid(Model)
+    .Build(columns =>
+    {
+        columns.Add(model => model.AnswerId).Titled("Answer ID");
+        columns.Add(model => model.Content).Titled("Content");
+        columns.Add(model => model.QuestionId).Titled("Question ID");
+    })
+    .Using(GridFilterMode.Header)
+    .Empty("No data found")
+    .Filterable()
+    .Sortable()
+    .Pageable()
+)
+
+<script>
+    document.addEventListener("rowclick", e => {
+        console.log(e);
+       // e.detail.data - clicked row's data from columns.
+        //e.detail.grid - grid's instance.
+        //e.detail.originalEvent - original tr click event which triggered the rowclick.
+    });
+</script>

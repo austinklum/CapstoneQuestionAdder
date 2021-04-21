@@ -26,8 +26,13 @@ namespace ImmersiveQuiz.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _answerContext.Answer.ToListAsync());
-        }
 
+        }
+        [HttpGet]
+        public ViewResult Index2()
+        {
+            return View(_answerContext.Set<Answer>());
+        }
         // GET: Answers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
