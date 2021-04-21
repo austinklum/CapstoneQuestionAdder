@@ -1,4 +1,8 @@
 ﻿@model ImmersiveQuiz.Models.QuestionAnswerViewModel
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.5/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.5/js/bootstrap-dialog.min.js"></script>
+
 <br />
 <table class="table table-hover">
     <thead>
@@ -15,7 +19,7 @@
     <tbody>
         @foreach (var item in Model.Answers)
         {
-            <tr>
+            <tr id="row-@item.AnswerId" data-id="@item.AnswerId" class="answer-row">
                 <td>
                     @Html.DisplayFor(modelItem => item.AnswerId)
                 </td>
@@ -32,4 +36,24 @@
 </table>
 <a class="badge large-badge bg-success text-light" asp-action="Create" asp-controller="Answers" asp-route-questionId="@Model.SearchQuestionId">Add Answer</a>
 
+<script>
+    $(document).ready(function () {
+        $('.answer-row').click(function () {
+            var id = $(this).attr('data-id');
+            $.ajax({
+                url: "/Home/DeleteProdDetails",
+                type: "POST",
+                data: { AnswerId: id },
+                success: function (data) {
+                    if (data.status == "Success") {
+                        var ok = confirm("Deleted successfully!");
+                        window.location.href = "/Locations/Details/" + id;
+                    }
+
+                }
+            });
+        });
+
+    });
+</script>
 
