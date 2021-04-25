@@ -34,7 +34,7 @@ namespace ImmersiveQuiz.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public JsonResult DeleteProdDetails(string answerId)
+        public JsonResult DeleteProdDetails(string answerId, bool isCorrect, string content)
         {
             return Json(new { status = "Success" });
         }

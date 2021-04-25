@@ -97,13 +97,44 @@ namespace ImmersiveQuiz.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AnswerId,Content,QuestionId")] Answer answer)
+        public async Task<IActionResult> Edit(int id, Answer answer)
         {
             if (id != answer.AnswerId)
             {
                 return NotFound();
             }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _answerContext.Update(answer);
+                    await _answerContext.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AnswerExists(answer.AnswerId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                Question question = _questionContext.Question.First(q => q.QuestionId == answer.QuestionId);
+                return RedirectToAction("Details", "Locations", new { id = question.LocationId });
+            }
+            return View(answer);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> InlineEdit(int answerId, string content, bool isCorrect)
+        {
+            var answer = _answerContext.Answer.Find(answerId);
+
+            answer.Content = content;
+            answer.IsCorrect = isCorrect;
 
             if (ModelState.IsValid)
             {
