@@ -25,7 +25,7 @@
                 <input id="txtContent-@item.AnswerId" asp-for="@item.Content" class="form-control" />
             </td>
             <td>
-                <a class="btn-update badge large-badge bg-primary text-light" data-id="@item.AnswerId">Update</a>
+                <button class="btn-update badge large-badge bg-primary text-light" data-id="@item.AnswerId">Update</button>
                 <a class="badge large-badge bg-danger text-light" asp-action="Delete" asp-controller="Answers" asp-route-id="@item.AnswerId">Delete</a>
             </td>
         </tr>
@@ -36,9 +36,8 @@
 
 <script>
     $(document).ready(function () {
-        $('.btn-update').unbind();
-    });
-    $(document).on('click', '.btn-update', function (e) {
+        $('.btn-update').off();
+    }).on('click', '.btn-update', function (e) {
         e.preventDefault();
         var id = $(this).attr('data-id');
         var isCorrect = $('#chkIsCorrect-' + id);

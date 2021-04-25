@@ -7,6 +7,6 @@
     <input id="txtContent-@Model.AnswerId" asp-for="@Model.Content" class="form-control" />
 </td>
 <td>
-    <a class="btn-update badge large-badge bg-primary text-light" data-id="@Model.AnswerId">Update</a>
+    <button class="btn-update badge large-badge bg-primary text-light" data-id="@Model.AnswerId">Update</button>
     <a class="badge large-badge bg-danger text-light" asp-action="Delete" asp-controller="Answers" asp-route-id="@Model.AnswerId">Delete</a>
 </td>
