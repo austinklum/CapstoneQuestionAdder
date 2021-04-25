@@ -154,10 +154,10 @@ namespace ImmersiveQuiz.Controllers
                         throw;
                     }
                 }
-                Question question = _questionContext.Question.First(q => q.QuestionId == answer.QuestionId);
-                return RedirectToAction("Details", "Locations", new { id = question.LocationId });
+                return PartialView("_AnswerRow", answer);
             }
-            return View(answer);
+            Question question = _questionContext.Question.First(q => q.QuestionId == answer.QuestionId);
+            return RedirectToAction("Details", "Locations", new { id = question.LocationId });
         }
 
         // GET: Answers/Delete/5

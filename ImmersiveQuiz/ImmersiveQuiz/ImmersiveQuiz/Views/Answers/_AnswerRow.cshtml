@@ -1,14 +1,15 @@
 ﻿@model ImmersiveQuiz.Models.Answer
 
-<tr id="row-@Model.AnswerId" data-id="@Model.AnswerId" class="answer-row">
-    <td>
-        <input id="chkIsCorrect-@Model.AnswerId" asp-for="@Model.IsCorrect" class="form-control" />
-    </td>
-    <td>
-        <input id="txtContent-@Model.AnswerId" asp-for="@Model.Content" class="form-control" />
-    </td>
-    <td>
-        <a class="btn-update badge large-badge bg-primary text-light" data-id="@Model.AnswerId" asp-route-id="@Model.AnswerId">Update</a>
-        <a class="badge large-badge bg-danger text-light" asp-action="Delete" asp-controller="Answers" asp-route-id="@Model.AnswerId">Delete</a>
-    </td>
-</tr>
+<td>
+    <input id="chkIsCorrect-@Model.AnswerId" asp-for="@Model.IsCorrect" class="form-control" />
+</td>
+<td>
+    <input id="txtContent-@Model.AnswerId" asp-for="@Model.Content" class="form-control" />
+</td>
+<td>
+    <a class="btn-update badge large-badge bg-primary text-light" data-id="@Model.AnswerId">Update</a>
+    <a class="badge large-badge bg-danger text-light" asp-action="Delete" asp-controller="Answers" asp-route-id="@Model.AnswerId">Delete</a>
+</td>
+@*<script>
+    $(document).on('click', '.btn-update', inlineEdit());
+</script>*@
