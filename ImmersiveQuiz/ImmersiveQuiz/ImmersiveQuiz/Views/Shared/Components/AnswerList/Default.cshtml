@@ -55,29 +55,6 @@
             }
         });
     });
-   /* $(document).ready(function () {
-        $('.btn-update').unbind();
-        $('.btn-update').click(function (e) { inlineEdit(e, this); });
-
-        function inlineEdit(e, btnUpdate) {
-            e.preventDefault();
-            var id = $(btnUpdate).attr('data-id');
-            var isCorrect = $('#chkIsCorrect-' + id);
-            var content = $('#txtContent-' + id);
-            $.ajax({
-                url: "/Answers/InlineEdit",
-                type: "POST",
-                data: {
-                    AnswerId: id,
-                    isCorrect: isCorrect.prop('checked'),
-                    content: content.val()
-                },
-                success: function (data) {
-                    $('#row-' + id).html(data);
-                }
-            });
-        }
-
-    }); */
+   
 </script>
 
