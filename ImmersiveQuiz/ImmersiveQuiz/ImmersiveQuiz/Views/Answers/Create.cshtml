@@ -13,14 +13,14 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="IsCorrect" class="control-label"></label>
+                <input asp-for="IsCorrect" class="form-control" />
+                <span asp-validation-for="IsCorrect" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Content" class="control-label"></label>
                 <input asp-for="Content" class="form-control" />
                 <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="QuestionId" class="control-label"></label>
-                <input asp-for="QuestionId" class="form-control" />
-                <span asp-validation-for="QuestionId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
