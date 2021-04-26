@@ -4,16 +4,35 @@
     @foreach (var item in Model.Questions)
     {
     <div class="card mb-3">
-        <div class="card-header font-weight-bold">
-            @Html.DisplayFor(modelItem => item.Content)
+        <div class="card-header font-weight-bold" id="divQuestionHeader-@item.QuestionId">
+            <input id="txtQuestionContent-@item.QuestionId" asp-for="@item.Content" class="form-control" />
+            <a class="badge large-badge bg-primary text-light btn-question-update" data-id="@item.QuestionId">Edit</a>
+            <a class="badge large-badge bg-danger text-light" asp-action="Delete" asp-controller="Questions" asp-route-id="@item.QuestionId">Delete</a>
         </div>
         <div class="card-body">
-            <p>
-                <a class="badge large-badge bg-primary text-light" asp-action="Edit" asp-controller="Questions" asp-route-id="@item.QuestionId">Edit</a>
-                <a class="badge large-badge bg-danger text-light" asp-action="Delete" asp-controller="Questions" asp-route-id="@item.QuestionId">Delete</a>
-            </p>
             @await Component.InvokeAsync("AnswerList", new { SearchQuestionId = item.QuestionId.ToString(), SearchAnswerContent = "" })
         </div>
     </div>
     }
 </div>
+<script>
+    $(document).ready(function () {
+        $('.btn-question-update').off();
+    }).on('click', '.btn-question-update', function (e) {
+        e.preventDefault();
+        var id = $(this).attr('data-id');
+        var content = $('#txtQuestionContent-' + id);
+        $.ajax({
+            url: "/Questions/InlineEdit",
+            type: "POST",
+            data: {
+                questionId: id,
+                content: content.val()
+            },
+            success: function (data) {
+                $('#divQuestionHeader-' + id).html(data);
+            }
+        });
+    });
+
+</script>

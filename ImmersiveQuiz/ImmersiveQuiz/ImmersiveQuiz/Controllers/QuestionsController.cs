@@ -149,6 +149,36 @@ namespace ImmersiveQuiz.Controllers
             return View(question);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> InlineEdit(int questionId, string content)
+        {
+            var question = _questionContext.Question.Find(questionId);
+
+            question.Content = content;
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _questionContext.Update(question);
+                    await _questionContext.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!QuestionExists(question.QuestionId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return PartialView("_QuestionHeader", question);
+            }
+            return RedirectToAction("Details", "Locations", new { id = question.LocationId });
+        }
+
         // GET: Questions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
