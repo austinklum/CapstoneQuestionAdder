@@ -58,6 +58,14 @@ namespace ImmersiveQuiz.Controllers
                 answer.QuestionId = id.Value;
             }
 
+            var question = _questionContext.Question.Find(answer.QuestionId);
+            if (question == null)
+            {
+                return NotFound();
+            }
+
+            answer.Question = question;
+
             return View(answer);
         }
 
@@ -65,7 +73,7 @@ namespace ImmersiveQuiz.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Create(Answer answer, int id)
+        public async Task<IActionResult> Create(Answer answer, int id) // passing in question Id
         {
             answer.QuestionId = id;
             if (ModelState.IsValid)

@@ -6,7 +6,9 @@
 
 <h1>Create</h1>
 
-<h4>Question</h4>
+<h3>Question</h3>
+<hr />
+<h4>@Model.Location.Name</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -16,16 +18,6 @@
                 <label asp-for="Content" class="control-label"></label>
                 <input asp-for="Content" class="form-control" />
                 <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CorrectAnswerId" class="control-label"></label>
-                <input asp-for="CorrectAnswerId" class="form-control" />
-                <span asp-validation-for="CorrectAnswerId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LocationId" class="control-label"></label>
-                <input asp-for="LocationId" class="form-control" />
-                <span asp-validation-for="LocationId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

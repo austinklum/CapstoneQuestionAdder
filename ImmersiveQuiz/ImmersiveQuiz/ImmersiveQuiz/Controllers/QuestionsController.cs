@@ -66,18 +66,34 @@ namespace ImmersiveQuiz.Controllers
                 return NotFound();
             }
 
+            var location = await _locationContext.Location.FindAsync(question.LocationId);
+            if (location == null)
+            {
+                return NotFound();
+            }
+
+            question.Location = location;
+
             return View(question);
         }
 
         // GET: Questions/Create
-        public IActionResult Create(int? locationId)
+        public IActionResult Create(int? id) //passing in location id
         {
             Question question = new Question();
 
-            if (locationId.HasValue)
+            if (id.HasValue)
             {
-                question.LocationId = locationId.Value;
+                question.LocationId = id.Value;
             }
+
+            var location = _locationContext.Location.Find(question.LocationId);
+            if (location == null)
+            {
+                return NotFound();
+            }
+
+            question.Location = location;
 
             return View(question);
         }
@@ -86,14 +102,14 @@ namespace ImmersiveQuiz.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("QuestionId,Content,CorrectAnswerId,LocationId")] Question question)
+        public async Task<IActionResult> Create(Question question, int id) // passing in location Id
         {
+            question.LocationId = id;
             if (ModelState.IsValid)
             {
                 _questionContext.Add(question);
                 await _questionContext.SaveChangesAsync();
-                return RedirectToAction("Details", "Locations", new { id = question.LocationId });
+                return RedirectToAction("Details", "Locations", new { id });
             }
             return View(question);
         }
@@ -111,6 +127,15 @@ namespace ImmersiveQuiz.Controllers
             {
                 return NotFound();
             }
+
+            var location = await _locationContext.Location.FindAsync(question.LocationId);
+            if (location == null)
+            {
+                return NotFound();
+            }
+
+            question.Location = location;
+
             return View(question);
         }
 
@@ -119,18 +144,22 @@ namespace ImmersiveQuiz.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("QuestionId,Content,CorrectAnswerId,LocationId")] Question question)
+        public async Task<IActionResult> Edit(int id, [Bind("QuestionId,Content")] Question question)
         {
             if (id != question.QuestionId)
             {
                 return NotFound();
             }
 
+            var ques = await _questionContext.Question.FindAsync(question.QuestionId);
+
+            ques.Content = question.Content;
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _questionContext.Update(question);
+                    _questionContext.Update(ques);
                     await _questionContext.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -144,7 +173,7 @@ namespace ImmersiveQuiz.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Locations", new { id = ques.LocationId });
             }
             return View(question);
         }
@@ -163,6 +192,14 @@ namespace ImmersiveQuiz.Controllers
             {
                 return NotFound();
             }
+
+            var location = await _locationContext.Location.FindAsync(question.LocationId);
+            if (location == null)
+            {
+                return NotFound();
+            }
+
+            question.Location = location;
 
             return View(question);
         }
