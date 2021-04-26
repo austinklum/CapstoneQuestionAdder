@@ -81,7 +81,9 @@ namespace ImmersiveQuiz.Controllers
                 _answerContext.Add(answer);
                 await _answerContext.SaveChangesAsync();
 
-                return RedirectToAction("Details", "Locations", new { id });
+                var question = _questionContext.Question.Find(id);
+
+                return RedirectToAction("Details", "Locations", new { id = question.LocationId });
             }
             return View(answer);
         }
