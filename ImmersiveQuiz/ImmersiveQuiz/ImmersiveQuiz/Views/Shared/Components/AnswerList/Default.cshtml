@@ -4,7 +4,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Answers[0].AnswerId)
+                @Html.DisplayNameFor(model => model.Answers[0].IsCorrect)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Answers[0].Content)
@@ -17,7 +17,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.AnswerId)
+                    @Html.DisplayFor(modelItem => item.IsCorrect)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Content)
@@ -30,6 +30,6 @@
         }
     </tbody>
 </table>
-<a class="badge large-badge bg-success text-light" asp-action="Create" asp-controller="Answers" asp-route-questionId="@Model.SearchQuestionId">Add Answer</a>
+<a class="badge large-badge bg-success text-light" asp-action="Create" asp-controller="Answers" asp-route-id="@Model.SearchQuestionId">Add Answer</a>
 
 

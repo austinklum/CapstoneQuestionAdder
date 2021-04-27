@@ -6,7 +6,9 @@
 
 <h1>Edit</h1>
 
-<h4>Answer</h4>
+<h3>Answer</h3>
+<hr />
+<h4>@Model.Question.Content</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,14 +16,14 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="AnswerId" />
             <div class="form-group">
+                <label asp-for="IsCorrect" class="control-label"></label>
+                <input asp-for="IsCorrect" class="form-control" />
+                <span asp-validation-for="IsCorrect" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Content" class="control-label"></label>
                 <input asp-for="Content" class="form-control" />
                 <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="QuestionId" class="control-label"></label>
-                <input asp-for="QuestionId" class="form-control" />
-                <span asp-validation-for="QuestionId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -31,7 +33,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Locations" asp-action="Details" asp-route-id="@Model.Question.LocationId">Back to List</a>
 </div>
 
 @section Scripts {
