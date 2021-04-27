@@ -7,22 +7,28 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ImmersiveQuiz.Data;
 using ImmersiveQuiz.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Components;
+using System.IO;
 
 namespace ImmersiveQuiz.Controllers
 {
     public class LocationsController : Controller
     {
-        private readonly LocationContext _context;
+        private readonly LocationContext _locationContext;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public LocationsController(LocationContext context)
+        public LocationsController(LocationContext context, IWebHostEnvironment hostEnvironment)
         {
-            _context = context;
+            _locationContext = context;
+            _webHostEnvironment = hostEnvironment;
         }
 
         // GET: Locations
         public async Task<IActionResult> Index(string search)
         {
-            var locations = from location in _context.Location
+            var locations = from location in _locationContext.Location
                             select location;
 
             if (!string.IsNullOrEmpty(search))
@@ -41,7 +47,7 @@ namespace ImmersiveQuiz.Controllers
                 return NotFound();
             }
 
-            var location = await _context.Location
+            var location = await _locationContext.Location
                 .FirstOrDefaultAsync(m => m.LocationId == id);
             if (location == null)
             {
@@ -62,15 +68,31 @@ namespace ImmersiveQuiz.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LocationId,Name,FilePath")] Location location)
+        public async Task<IActionResult> Create(LocationImageViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(location);
-                await _context.SaveChangesAsync();
+                Location location = new Location()
+                {
+                    Name = vm.Name,
+                    ImageGuid = UploadImage(vm)
+                };
+                _locationContext.Add(location);
+                await _locationContext.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(location);
+            return View(vm);
+        }
+
+        private Guid UploadImage(LocationImageViewModel vm)
+        {
+            Guid imageGuid = Guid.NewGuid();
+            string filePath = Path.Combine(Path.Combine(_webHostEnvironment.WebRootPath, "images"), imageGuid.ToString());
+            
+            using var fileStream = new FileStream(filePath, FileMode.Create);
+            vm.LocationImage.CopyTo(fileStream);
+            
+            return imageGuid;
         }
 
         // GET: Locations/Edit/5
@@ -81,7 +103,7 @@ namespace ImmersiveQuiz.Controllers
                 return NotFound();
             }
 
-            var location = await _context.Location.FindAsync(id);
+            var location = await _locationContext.Location.FindAsync(id);
             if (location == null)
             {
                 return NotFound();
@@ -105,8 +127,8 @@ namespace ImmersiveQuiz.Controllers
             {
                 try
                 {
-                    _context.Update(location);
-                    await _context.SaveChangesAsync();
+                    _locationContext.Update(location);
+                    await _locationContext.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -132,7 +154,7 @@ namespace ImmersiveQuiz.Controllers
                 return NotFound();
             }
 
-            var location = await _context.Location
+            var location = await _locationContext.Location
                 .FirstOrDefaultAsync(m => m.LocationId == id);
             if (location == null)
             {
@@ -147,15 +169,15 @@ namespace ImmersiveQuiz.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var location = await _context.Location.FindAsync(id);
-            _context.Location.Remove(location);
-            await _context.SaveChangesAsync();
+            var location = await _locationContext.Location.FindAsync(id);
+            _locationContext.Location.Remove(location);
+            await _locationContext.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool LocationExists(int id)
         {
-            return _context.Location.Any(e => e.LocationId == id);
+            return _locationContext.Location.Any(e => e.LocationId == id);
         }
     }
 }
