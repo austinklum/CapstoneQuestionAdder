@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Components;
 using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace ImmersiveQuiz.Controllers
 {
@@ -75,7 +76,8 @@ namespace ImmersiveQuiz.Controllers
                 Location location = new Location()
                 {
                     Name = vm.Name,
-                    ImageGuid = UploadImage(vm)
+                    ImageGuid = UploadImage(vm.LocationImage),
+                    ImageExtension = Path.GetExtension(vm.LocationImage.FileName)
                 };
                 _locationContext.Add(location);
                 await _locationContext.SaveChangesAsync();
@@ -84,13 +86,13 @@ namespace ImmersiveQuiz.Controllers
             return View(vm);
         }
 
-        private Guid UploadImage(LocationImageViewModel vm)
+        private Guid UploadImage(IFormFile image)
         {
             Guid imageGuid = Guid.NewGuid();
-            string filePath = Path.Combine(Path.Combine(_webHostEnvironment.WebRootPath, "images"), imageGuid.ToString());
+            string filePath = Path.Combine(Path.Combine(_webHostEnvironment.WebRootPath, "images"), imageGuid.ToString()) + Path.GetExtension(image.FileName);
             
             using var fileStream = new FileStream(filePath, FileMode.Create);
-            vm.LocationImage.CopyTo(fileStream);
+            image.CopyTo(fileStream);
             
             return imageGuid;
         }

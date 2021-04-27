@@ -13,6 +13,13 @@ namespace ImmersiveQuiz.Models
 
         public Guid ImageGuid { get; set; }
 
-        public string FilePath { get; set; }
+        public string ImageExtension { get; set; }
+
+        public string ImagePath {
+            get 
+            {
+                return $"~/images/{ImageGuid}{ImageExtension}";
+            }
+        }
     }
 }
