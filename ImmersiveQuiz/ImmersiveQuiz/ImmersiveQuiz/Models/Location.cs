@@ -18,7 +18,7 @@ namespace ImmersiveQuiz.Models
         public string ImagePath {
             get 
             {
-                return $"~/images/{ImageGuid}{ImageExtension}";
+                return $"/images/{ImageGuid}{ImageExtension}";
             }
         }
     }
