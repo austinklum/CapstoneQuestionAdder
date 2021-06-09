@@ -110,7 +110,15 @@ namespace ImmersiveQuiz.Controllers
             {
                 return NotFound();
             }
-            return View(location);
+
+            
+            LocationImageViewModel vm = new LocationImageViewModel()
+            {
+                LocationId = location.LocationId,
+                Name = location.Name
+            };
+
+            return View(vm);
         }
 
         // POST: Locations/Edit/5
@@ -118,23 +126,18 @@ namespace ImmersiveQuiz.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("LocationId,Name,FilePath")] Location location)
+        public async Task<IActionResult> Edit(LocationImageViewModel vm)
         {
-            if (id != location.LocationId)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _locationContext.Update(location);
+                    _locationContext.Update(vm);
                     await _locationContext.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LocationExists(location.LocationId))
+                    if (!LocationExists(vm.LocationId))
                     {
                         return NotFound();
                     }
@@ -143,9 +146,9 @@ namespace ImmersiveQuiz.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Locations", new { id = vm.LocationId });
             }
-            return View(location);
+            return View(vm);
         }
 
         // GET: Locations/Delete/5
