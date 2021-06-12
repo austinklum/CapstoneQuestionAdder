@@ -22,7 +22,7 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FilePath)
+                @Html.DisplayNameFor(model => model.ImagePath)
             </th>
             <th></th>
         </tr>
@@ -34,10 +34,9 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FilePath)
+                @Html.DisplayFor(modelItem => item.ImagePath)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.LocationId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.LocationId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.LocationId">Delete</a>
             </td>
