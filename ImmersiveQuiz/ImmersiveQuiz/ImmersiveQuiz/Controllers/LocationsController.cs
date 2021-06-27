@@ -18,11 +18,15 @@ namespace ImmersiveQuiz.Controllers
     public class LocationsController : Controller
     {
         private readonly LocationContext _locationContext;
+        private readonly QuestionContext _questionContext;
+        private readonly AnswerContext _answerContext;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public LocationsController(LocationContext context, IWebHostEnvironment hostEnvironment)
+        public LocationsController(LocationContext context, QuestionContext questionContext, AnswerContext answerContext, IWebHostEnvironment hostEnvironment)
         {
             _locationContext = context;
+            _questionContext = questionContext;
+            _answerContext = answerContext;
             _webHostEnvironment = hostEnvironment;
         }
 
@@ -175,8 +179,21 @@ namespace ImmersiveQuiz.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var location = await _locationContext.Location.FindAsync(id);
+
+            var questionsToLocations = _questionContext.Question.Where(q => q.LocationId == location.LocationId);
+            foreach (var question in questionsToLocations)
+            {
+                var answersToQuestion = _answerContext.Answer.Where(ans => ans.QuestionId == question.QuestionId);
+                _answerContext.Answer.RemoveRange(answersToQuestion);
+
+                _questionContext.Remove(question);
+            }
             _locationContext.Location.Remove(location);
+
+            await _answerContext.SaveChangesAsync();
+            await _questionContext.SaveChangesAsync();
             await _locationContext.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
