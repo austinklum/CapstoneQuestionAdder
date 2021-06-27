@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ImmersiveQuiz.Data;
 using ImmersiveQuiz.Models;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace ImmersiveQuiz.Controllers
 {
@@ -14,11 +15,13 @@ namespace ImmersiveQuiz.Controllers
     {
         private readonly QuestionContext _questionContext;
         private readonly LocationContext _locationContext;
+        private readonly AnswerContext _answerContext;
 
-        public QuestionsController(QuestionContext context, LocationContext locationContext)
+        public QuestionsController(QuestionContext context, LocationContext locationContext, AnswerContext answerContext)
         {
             _questionContext = context;
             _locationContext = locationContext;
+            _answerContext = answerContext;
         }
 
         // GET: Questions
@@ -210,8 +213,14 @@ namespace ImmersiveQuiz.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var question = await _questionContext.Question.FindAsync(id);
-            _questionContext.Question.Remove(question);
+
+            var answersToQuestion = _answerContext.Answer.Where(ans => ans.QuestionId == question.QuestionId);
+            _answerContext.Answer.RemoveRange(answersToQuestion);
+            await _answerContext.SaveChangesAsync();
+
+            _questionContext.Remove(question);
             await _questionContext.SaveChangesAsync();
+
             return RedirectToAction("Details", "Locations", new { id = question.LocationId });
         }
 
