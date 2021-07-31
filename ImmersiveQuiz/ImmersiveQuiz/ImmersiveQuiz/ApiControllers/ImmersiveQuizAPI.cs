@@ -70,6 +70,35 @@ namespace ImmersiveQuiz.ApiControllers
             return questions;
         }
 
+        [HttpGet("LocationsQuestions/{locationId}")]
+        public List<QuestionVR> GetQuestionsByLocation(int locationId)
+        {
+            List<AnswerVR> answers = _answerContext.Answer
+                  .Select(a => new AnswerVR()
+                  {
+                      AnswerId = a.AnswerId,
+                      QuestionId = a.QuestionId,
+                      Content = a.Content,
+                      IsCorrect = a.IsCorrect
+                  }).ToList();
+
+            List<QuestionVR> questions = _questionContext.Question
+                .Where(q => q.LocationId == locationId)
+                .Select(q => new QuestionVR()
+                {
+                    QuestionId = q.QuestionId,
+                    LocationId = q.LocationId,
+                    Content = q.Content
+                }).ToList();
+
+            foreach (QuestionVR question in questions)
+            {
+                question.Answers = answers.Where(ans => ans.QuestionId == question.QuestionId).ToList();
+            }
+
+            return questions;
+        }
+
         // POST api/<controller>
         [HttpPost]
         public void Post([FromBody]string value)
