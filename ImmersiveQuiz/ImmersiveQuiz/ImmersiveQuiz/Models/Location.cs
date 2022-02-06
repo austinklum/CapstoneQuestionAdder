@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,10 +17,15 @@ namespace ImmersiveQuiz.Models
         public string ImageExtension { get; set; }
 
         public string ImagePath {
-            get 
+            get
             {
                 return $"/images/{ImageGuid}{ImageExtension}";
             }
         }
+
+        //public int CourseId { get; set; }
+
+        [NotMapped]
+        public Course Course { get; set; }
     }
 }

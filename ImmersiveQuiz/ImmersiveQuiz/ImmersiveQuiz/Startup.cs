@@ -32,6 +32,7 @@ namespace ImmersiveQuiz
             services.AddDbContext<QuestionContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QuestionContext")));
             services.AddDbContext<AnswerContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QuestionContext")));
             services.AddDbContext<LocationContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QuestionContext")));
+            services.AddDbContext<CourseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QuestionContext")));
             services.AddAuthentication().AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", options => { });
             services.AddAuthorization(options =>
             {
