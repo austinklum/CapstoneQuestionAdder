@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ImmersiveQuiz.Data;
 using ImmersiveQuiz.Models;
+using ImmersiveQuiz.Models.Attributes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ImmersiveQuiz.ApiControllers
 {
+    [BasicAuthorization]
     [Route("ImmersiveQuizAPI")]
     [ApiController]
     public class ImmersiveQuizAPI : ControllerBase
@@ -103,20 +105,12 @@ namespace ImmersiveQuiz.ApiControllers
         [HttpPost("SubmitScore")]
         public void Post([FromBody] SubmitScore submitScore)
         {
-            if (submitScore.Score < 0)
+            if (submitScore.PointScore < 0)
             {
                 throw new InvalidOperationException();
             }
         }
-
-        [HttpGet("SubmitScore/{name}/{score}")]
-        public void Post(string name, float score)
-        {
-            if (score < 0)
-            {
-                throw new InvalidOperationException();
-            }
-        }
+  
             // PUT api/<controller>/5
             [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
