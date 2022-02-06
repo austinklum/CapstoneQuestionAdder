@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ImmersiveQuiz.Data;
+using ImmersiveQuiz.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,6 +32,11 @@ namespace ImmersiveQuiz
             services.AddDbContext<QuestionContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QuestionContext")));
             services.AddDbContext<AnswerContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QuestionContext")));
             services.AddDbContext<LocationContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QuestionContext")));
+            services.AddAuthentication().AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", options => { });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("BasicAuthentication", new AuthorizationPolicyBuilder("BasicAuthentication").RequireAuthenticatedUser().Build());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
