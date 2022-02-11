@@ -1,0 +1,53 @@
+﻿@model ImmersiveQuiz.Models.CourseLocationViewModel
+<br />
+<div class="accordion" id="accordionPanelsStayOpenExample">
+    @foreach (var item in Model.Locations)
+    {
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-heading-@item.LocationId">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse-@item.LocationId" aria-expanded="true" aria-controls="panelsStayOpen-collapse-@item.LocationId">
+                @Html.DisplayFor(modelItem => item.Name)
+            </button>
+        </h2>
+        <div id="panelsStayOpen-collapse-@item.LocationId" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-heading-@item.LocationId">
+            <div class="accordion-body">
+                <p>
+                    <a class="badge large-badge bg-primary text-light" asp-action="Details" asp-controller="Locations" asp-route-id="@item.LocationId">Details</a>
+                    <a class="badge large-badge bg-danger text-light" asp-action="Delete" asp-controller="Locations" asp-route-id="@item.LocationId">Delete</a>
+                </p>
+                <dl class="row">
+                    <dd class="col-sm-10">
+                        <img src="@item.ImagePath" height="150" width="150" asp-append-version="true" />
+                    </dd>
+                    <dd class="col-sm-2">
+                        <a href="@item.ImagePath">View Image</a>
+                    </dd>
+                </dl>
+                @await Component.InvokeAsync("QuestionList", new { locationId = item.LocationId.ToString(), search = "" })
+            </div>
+        </div>
+    </div>
+    @*<div class="card mb-3">
+        <div class="card-header font-weight-bold collapse-toggle foobar" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            @Html.DisplayFor(modelItem => item.Name)
+        </div>
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                <p>
+                    <a class="badge large-badge bg-primary text-light" asp-action="Details" asp-controller="Locations" asp-route-id="@item.LocationId">Details</a>
+                    <a class="badge large-badge bg-danger text-light" asp-action="Delete" asp-controller="Locations" asp-route-id="@item.LocationId">Delete</a>
+                </p>
+                <dl class="row">
+                    <dd class="col-sm-10">
+                        <img src="@item.ImagePath" height="150" width="150" asp-append-version="true" />
+                    </dd>
+                    <dd class="col-sm-2">
+                        <a href="@item.ImagePath">View Image</a>
+                    </dd>
+                </dl>
+                @await Component.InvokeAsync("QuestionList", new { locationId = item.LocationId.ToString(), search = "" })
+            </div>
+        </div>
+    </div>*@
+    }
+</div>

@@ -8,12 +8,13 @@ namespace ImmersiveQuiz.Models
 {
     public class CourseLocationViewModel
     {
-            public List<Location> Locations { get; set; }
+       
+        public List<Location> Locations { get; set; }
 
-            public SelectList Courses { get; set; }
+        public SelectList Courses { get; set; }
 
-            public string SearchCourseId { get; set; }
+        public string CourseId { get; set; }
 
-            public string SearchCourseContent { get; set; }
+        public string Search { get; set; }
     }
 }

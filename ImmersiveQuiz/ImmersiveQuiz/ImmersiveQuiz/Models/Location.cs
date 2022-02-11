@@ -23,7 +23,7 @@ namespace ImmersiveQuiz.Models
             }
         }
 
-        //public int CourseId { get; set; }
+        public int CourseId { get; set; }
 
         [NotMapped]
         public Course Course { get; set; }

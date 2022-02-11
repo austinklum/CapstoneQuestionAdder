@@ -1,0 +1,8 @@
+﻿@model ImmersiveQuiz.Models.QuestionLocationViewModel
+<br />
+<ul>
+    @foreach (var item in Model.Questions)
+    {
+        <li> @Html.DisplayFor(modelItem => item.Content)</li>
+    }
+</ul>
