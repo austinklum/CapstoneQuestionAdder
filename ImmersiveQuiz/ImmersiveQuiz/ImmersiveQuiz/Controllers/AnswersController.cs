@@ -12,14 +12,18 @@ namespace ImmersiveQuiz.Controllers
 {
     public class AnswersController : Controller
     {
+        
         private readonly AnswerContext _answerContext;
         private readonly QuestionContext _questionContext;
+        private readonly LocationContext _locationContext;
 
 
-        public AnswersController(AnswerContext context, QuestionContext questionContext)
+
+        public AnswersController(AnswerContext context, QuestionContext questionContext, LocationContext locationContext)
         {
             _answerContext = context;
             _questionContext = questionContext;
+            _locationContext = locationContext;
         }
 
         // GET: Answers
@@ -66,6 +70,14 @@ namespace ImmersiveQuiz.Controllers
 
             answer.Question = question;
 
+            var location = _locationContext.Location.Find(answer.Question.LocationId);
+            if (location == null)
+            {
+                return NotFound();
+            }
+
+            answer.Question.Location = location;
+
             return View(answer);
         }
 
@@ -83,7 +95,13 @@ namespace ImmersiveQuiz.Controllers
 
                 var question = _questionContext.Question.Find(id);
 
-                return RedirectToAction("Details", "Locations", new { id = question.LocationId });
+                var location = _locationContext.Location.Find(question.LocationId);
+                if (location == null)
+                {
+                    return NotFound();
+                }
+
+                return RedirectToAction("Details", "Courses", new { id = location.CourseId });
             }
             return View(answer);
         }
@@ -109,6 +127,14 @@ namespace ImmersiveQuiz.Controllers
             }
 
             answer.Question = question;
+
+            var location = _locationContext.Location.Find(answer.Question.LocationId);
+            if (location == null)
+            {
+                return NotFound();
+            }
+
+            answer.Question.Location = location;
 
             return View(answer);
         }
@@ -148,7 +174,14 @@ namespace ImmersiveQuiz.Controllers
                     }
                 }
                 Question question = _questionContext.Question.First(q => q.QuestionId == ans.QuestionId);
-                return RedirectToAction("Details", "Locations", new { id = question.LocationId });
+
+                var location = _locationContext.Location.Find(question.LocationId);
+                if (location == null)
+                {
+                    return NotFound();
+                }
+
+                return RedirectToAction("Details", "Courses", new { id = location.CourseId });
             }
             return View(answer);
         }
@@ -176,6 +209,14 @@ namespace ImmersiveQuiz.Controllers
 
             answer.Question = question;
 
+            var location = _locationContext.Location.Find(answer.Question.LocationId);
+            if (location == null)
+            {
+                return NotFound();
+            }
+
+            answer.Question.Location = location;
+
             return View(answer);
         }
 
@@ -188,7 +229,14 @@ namespace ImmersiveQuiz.Controllers
             _answerContext.Answer.Remove(answer);
             await _answerContext.SaveChangesAsync();
             Question question = _questionContext.Question.First(q => q.QuestionId == answer.QuestionId);
-            return RedirectToAction("Details", "Locations", new { id = question.LocationId });
+
+            var location = _locationContext.Location.Find(question.LocationId);
+            if (location == null)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction("Details", "Courses", new { id = location.CourseId });
         }
 
         private bool AnswerExists(int id)

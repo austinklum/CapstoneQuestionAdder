@@ -12,6 +12,7 @@ namespace ImmersiveQuiz.Models
 
         public SelectList Locations { get; set; }
         
+        public string CourseId { get; set; }
         public string LocationId { get; set; }
         
         public string Search { get; set; }

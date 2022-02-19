@@ -12,17 +12,23 @@ namespace ImmersiveQuiz.Controllers
 {
     public class CoursesController : Controller
     {
-        private readonly CourseContext _context;
+        private readonly CourseContext _courseContext;
+        private readonly LocationContext _locationContext;
+        private readonly QuestionContext _questionContext;
+        private readonly AnswerContext _answerContext;
 
-        public CoursesController(CourseContext context)
+        public CoursesController(CourseContext context, LocationContext locationContext, QuestionContext questionContext, AnswerContext answerContext)
         {
-            _context = context;
+            _courseContext = context;
+            _locationContext = locationContext;
+            _questionContext = questionContext;
+            _answerContext = answerContext;
         }
 
         // GET: Courses
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Course.ToListAsync());
+            return View(await _courseContext.Course.ToListAsync());
         }
 
         // GET: Courses/Details/5
@@ -33,7 +39,7 @@ namespace ImmersiveQuiz.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Course
+            var course = await _courseContext.Course
                 .FirstOrDefaultAsync(m => m.CourseId == id);
             if (course == null)
             {
@@ -58,8 +64,8 @@ namespace ImmersiveQuiz.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(course);
-                await _context.SaveChangesAsync();
+                _courseContext.Add(course);
+                await _courseContext.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(course);
@@ -73,7 +79,7 @@ namespace ImmersiveQuiz.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Course.FindAsync(id);
+            var course = await _courseContext.Course.FindAsync(id);
             if (course == null)
             {
                 return NotFound();
@@ -97,8 +103,8 @@ namespace ImmersiveQuiz.Controllers
             {
                 try
                 {
-                    _context.Update(course);
-                    await _context.SaveChangesAsync();
+                    _courseContext.Update(course);
+                    await _courseContext.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -124,7 +130,7 @@ namespace ImmersiveQuiz.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Course
+            var course = await _courseContext.Course
                 .FirstOrDefaultAsync(m => m.CourseId == id);
             if (course == null)
             {
@@ -139,15 +145,36 @@ namespace ImmersiveQuiz.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var course = await _context.Course.FindAsync(id);
-            _context.Course.Remove(course);
-            await _context.SaveChangesAsync();
+            var course = await _courseContext.Course.FindAsync(id);
+
+            var locations = _locationContext.Location.Where(l => l.CourseId == course.CourseId);
+
+            foreach (var location in locations)
+            {
+                var questionsToLocations = _questionContext.Question.Where(q => q.LocationId == location.LocationId);
+                foreach (var question in questionsToLocations)
+                {
+                    var answersToQuestion = _answerContext.Answer.Where(ans => ans.QuestionId == question.QuestionId);
+                    _answerContext.Answer.RemoveRange(answersToQuestion);
+
+                    _questionContext.Remove(question);
+                }
+                _locationContext.Location.Remove(location);
+            }
+
+            _courseContext.Course.Remove(course);
+
+            await _answerContext.SaveChangesAsync();
+            await _questionContext.SaveChangesAsync();
+            await _locationContext.SaveChangesAsync();
+            await _courseContext.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
         private bool CourseExists(int id)
         {
-            return _context.Course.Any(e => e.CourseId == id);
+            return _courseContext.Course.Any(e => e.CourseId == id);
         }
     }
 }

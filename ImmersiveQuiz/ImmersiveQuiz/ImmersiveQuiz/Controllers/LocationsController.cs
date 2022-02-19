@@ -63,9 +63,18 @@ namespace ImmersiveQuiz.Controllers
         }
 
         // GET: Locations/Create
-        public IActionResult Create()
+        public IActionResult Create(int? id) // Passing in courseId
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            LocationImageViewModel vm = new LocationImageViewModel()
+            {
+                CourseId = id.Value
+            };
+            return View(vm);
         }
 
         // POST: Locations/Create
@@ -73,19 +82,20 @@ namespace ImmersiveQuiz.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(LocationImageViewModel vm)
+        public async Task<IActionResult> Create(LocationImageViewModel vm, int id)
         {
             if (ModelState.IsValid)
             {
                 Location location = new Location()
                 {
+                    CourseId = id,
                     Name = vm.Name,
                     ImageGuid = UploadImage(vm.LocationImage),
                     ImageExtension = Path.GetExtension(vm.LocationImage.FileName)
                 };
                 _locationContext.Add(location);
                 await _locationContext.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Courses", new { id = id });
             }
             return View(vm);
         }
@@ -118,6 +128,7 @@ namespace ImmersiveQuiz.Controllers
             
             LocationImageViewModel vm = new LocationImageViewModel()
             {
+                CourseId = location.CourseId,
                 LocationId = location.LocationId,
                 Name = location.Name
             };
@@ -150,7 +161,7 @@ namespace ImmersiveQuiz.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Details", "Locations", new { id = vm.LocationId });
+                return RedirectToAction("Details", "Courses", new { id = vm.CourseId });
             }
             return View(vm);
         }
@@ -194,7 +205,7 @@ namespace ImmersiveQuiz.Controllers
             await _questionContext.SaveChangesAsync();
             await _locationContext.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", "Courses", new { id = location.CourseId });
         }
 
         private bool LocationExists(int id)
