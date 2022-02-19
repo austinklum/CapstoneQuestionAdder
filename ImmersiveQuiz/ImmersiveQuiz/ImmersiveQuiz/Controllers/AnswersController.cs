@@ -88,18 +88,34 @@ namespace ImmersiveQuiz.Controllers
         public async Task<IActionResult> Create(Answer answer, int id) // passing in question Id
         {
             answer.QuestionId = id;
+
+            var answerCount = _answerContext.Answer.Count(x => x.QuestionId == id);
+
+            var question = _questionContext.Question.Find(answer.QuestionId);
+            if (question == null)
+            {
+                return NotFound();
+            }
+
+            answer.Question = question;
+
+            var location = _locationContext.Location.Find(answer.Question.LocationId);
+            if (location == null)
+            {
+                return NotFound();
+            }
+
+            answer.Question.Location = location;
+
+            if (answerCount > 6)
+            {
+                ModelState.AddModelError("Answer", "Maximum number of answers reached!");
+            }
+
             if (ModelState.IsValid)
             {
                 _answerContext.Add(answer);
                 await _answerContext.SaveChangesAsync();
-
-                var question = _questionContext.Question.Find(id);
-
-                var location = _locationContext.Location.Find(question.LocationId);
-                if (location == null)
-                {
-                    return NotFound();
-                }
 
                 return RedirectToAction("Details", "Courses", new { id = location.CourseId });
             }

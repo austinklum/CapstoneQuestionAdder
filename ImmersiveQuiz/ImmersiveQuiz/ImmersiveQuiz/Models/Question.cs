@@ -18,5 +18,8 @@ namespace ImmersiveQuiz.Models
         
         [NotMapped]
         public Location Location { get; set; }
+
+        [NotMapped]
+        public List<Answer> Answers { get; set; }
     }
 }
