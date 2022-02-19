@@ -20,7 +20,7 @@ namespace ImmersiveQuiz.Controllers
 
         public IActionResult Index()
         {
-            return RedirectToAction("Index", "Locations");
+            return RedirectToAction("Index", "Courses");
         }
 
         public IActionResult Privacy()
