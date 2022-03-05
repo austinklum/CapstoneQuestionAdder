@@ -1,4 +1,4 @@
-﻿@model ImmersiveQuiz.Models.Question
+﻿@model ImmersiveQuiz.Models.Course
 
 @{
     ViewData["Title"] = "Create";
@@ -6,18 +6,16 @@
 
 <h1>Create</h1>
 
-<h3>Question</h3>
-<hr />
-<h4>@Model.Location.Name</h4>
+<h4>Course</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
-                <span asp-validation-for="Content" class="text-danger"></span>
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -27,7 +25,7 @@
 </div>
 
 <div>
-    <a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.Location.CourseId">Back to Course</a>
+    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

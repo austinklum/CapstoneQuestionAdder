@@ -16,7 +16,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="IsCorrect" class="control-label"></label>
-                <input asp-for="IsCorrect" class="form-control" />
+                @Html.CheckBoxFor(m => m.IsCorrect, new { @class="form-check large-checkbox"})
                 <span asp-validation-for="IsCorrect" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -32,7 +32,7 @@
 </div>
 
 <div>
-    <a asp-controller="Locations" asp-action="Details" asp-route-id="@Model.Question.LocationId">Back to List</a>
+    <a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.Question.Location.CourseId">Back to Course</a>
 </div>
 
 @section Scripts {

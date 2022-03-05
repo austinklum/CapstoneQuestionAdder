@@ -12,6 +12,8 @@ namespace ImmersiveQuiz.Models
     {
         public int LocationId { get; set; }
 
+        public int CourseId { get; set; }
+
         [Required(ErrorMessage = "Please enter location name")]
         public string Name { get; set; }
 

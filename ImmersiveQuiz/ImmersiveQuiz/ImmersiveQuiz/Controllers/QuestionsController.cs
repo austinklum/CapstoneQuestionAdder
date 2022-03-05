@@ -112,7 +112,14 @@ namespace ImmersiveQuiz.Controllers
             {
                 _questionContext.Add(question);
                 await _questionContext.SaveChangesAsync();
-                return RedirectToAction("Details", "Locations", new { id });
+
+                var location = _locationContext.Location.Find(question.LocationId);
+                if (location == null)
+                {
+                    return NotFound();
+                }
+
+                return RedirectToAction("Details", "Courses", new { id = location.CourseId });
             }
             return View(question);
         }
@@ -176,7 +183,13 @@ namespace ImmersiveQuiz.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Details", "Locations", new { id = ques.LocationId });
+                var location = _locationContext.Location.Find(question.LocationId);
+                if (location == null)
+                {
+                    return NotFound();
+                }
+
+                return RedirectToAction("Details", "Courses", new { id = location.CourseId });
             }
             return View(question);
         }
@@ -221,7 +234,13 @@ namespace ImmersiveQuiz.Controllers
             _questionContext.Remove(question);
             await _questionContext.SaveChangesAsync();
 
-            return RedirectToAction("Details", "Locations", new { id = question.LocationId });
+            var location = _locationContext.Location.Find(question.LocationId);
+            if (location == null)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction("Details", "Courses", new { id = location.CourseId });
         }
 
         private bool QuestionExists(int id)

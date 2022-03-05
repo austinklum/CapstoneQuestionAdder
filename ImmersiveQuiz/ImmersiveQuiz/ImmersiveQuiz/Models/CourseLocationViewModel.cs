@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace ImmersiveQuiz.Models
 {
-    public class QuestionLocationViewModel
+    public class CourseLocationViewModel
     {
-        public List<Question> Questions { get; set; }
+       
+        public List<Location> Locations { get; set; }
 
-        public SelectList Locations { get; set; }
-        
+        public SelectList Courses { get; set; }
+
         public string CourseId { get; set; }
-        public string LocationId { get; set; }
-        
+
         public string Search { get; set; }
     }
 }

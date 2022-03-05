@@ -1,0 +1,33 @@
+﻿@model IEnumerable<ImmersiveQuiz.Models.Course>
+
+@{
+    ViewData["Title"] = "Courses";
+}
+
+<h1>All Courses</h1>
+
+<p>
+    <a class="badge large-badge bg-success text-light" asp-action="Create">Add Course</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <a class="badge large-badge bg-primary text-light" asp-action="Details" asp-route-id="@item.CourseId">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

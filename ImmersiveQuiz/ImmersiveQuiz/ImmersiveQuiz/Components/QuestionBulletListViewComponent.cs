@@ -10,17 +10,15 @@ using System.Threading.Tasks;
 
 namespace ImmersiveQuiz.Components
 {
-    public class QuestionListViewComponent : ViewComponent
+    public class QuestionBulletListViewComponent : ViewComponent
     {
         private readonly QuestionContext _questionContext;
         private readonly LocationContext _locationContext;
-        private readonly AnswerContext _answerContext;
         
-        public QuestionListViewComponent(QuestionContext questionContext, LocationContext locationContext, AnswerContext answerContext)
+        public QuestionBulletListViewComponent(QuestionContext questionContext, LocationContext locationContext)
         {
             _questionContext = questionContext;
             _locationContext = locationContext;
-            _answerContext = answerContext;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(string locationId, string search)
@@ -32,9 +30,6 @@ namespace ImmersiveQuiz.Components
             var questions = from m in _questionContext.Question
                             select m;
 
-            var answers = from m in _answerContext.Answer
-                            select m;
-
             if (!string.IsNullOrEmpty(search))
             {
                 questions = questions.Where(s => s.Content.Contains(search));
@@ -43,11 +38,6 @@ namespace ImmersiveQuiz.Components
             if (!string.IsNullOrEmpty(locationId))
             {
                 questions = questions.Where(x => x.LocationId == int.Parse(locationId));
-            }
-
-            foreach(var question in questions)
-            {
-                question.Answers = await answers.Where(x => x.QuestionId == question.QuestionId).ToListAsync();
             }
 
             var vm = new QuestionLocationViewModel

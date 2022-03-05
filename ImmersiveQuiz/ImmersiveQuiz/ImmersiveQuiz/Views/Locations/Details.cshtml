@@ -28,7 +28,7 @@
     </dl>
 </div>
 <div>
-    <a class="badge large-badge bg-secondary text-light" asp-action="Index">Back to List</a> |
+    <a class="badge large-badge bg-secondary text-light" asp-controller="Courses" asp-action="Details" asp-route-id="@Model.CourseId">Back to List</a> |
     <a class="badge large-badge bg-primary text-light" asp-action="Edit" asp-route-id="@Model.LocationId">Edit</a>
     <a class="badge large-badge bg-success text-light" asp-action="Create" asp-controller="Questions" asp-route-id="@Model.LocationId">Add Question</a>
 </div>
