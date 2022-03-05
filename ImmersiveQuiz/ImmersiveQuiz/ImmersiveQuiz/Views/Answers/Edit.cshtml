@@ -17,7 +17,7 @@
             <input type="hidden" asp-for="AnswerId" />
             <div class="form-group">
                 <label asp-for="IsCorrect" class="control-label"></label>
-                <input asp-for="IsCorrect" class="form-control" />
+                @Html.CheckBoxFor(m => m.IsCorrect, new { @class = "form-check large-checkbox" })
                 <span asp-validation-for="IsCorrect" class="text-danger"></span>
             </div>
             <div class="form-group">

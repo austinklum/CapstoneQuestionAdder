@@ -5,6 +5,11 @@ a {
     text-decoration: none;
 }
 
+.large-checkbox {
+    width: 30px;
+    height: 30px;
+}
+
 .large-badge {
     font-size: 95%;
 }
