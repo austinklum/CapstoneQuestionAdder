@@ -17,18 +17,48 @@ namespace ImmersiveQuiz.ApiControllers
     [ApiController]
     public class ImmersiveQuizAPI : ControllerBase
     {
+        private readonly CourseContext _courseContext;
         private readonly LocationContext _locationContext;
         private readonly QuestionContext _questionContext;
         private readonly AnswerContext _answerContext;
 
-        public ImmersiveQuizAPI(LocationContext locationContext, QuestionContext questionContext, AnswerContext answerContext)
+        public ImmersiveQuizAPI(CourseContext courseContext, LocationContext locationContext, QuestionContext questionContext, AnswerContext answerContext)
         {
+            _courseContext = courseContext;
             _locationContext = locationContext;
             _questionContext = questionContext;
             _answerContext = answerContext;
         }
 
-        // GET: api/<controller>
+
+        [HttpGet("AllCourses")]
+        public List<CourseVR> GetAllCourses()
+        {
+            List<CourseVR> courses = _courseContext.Course
+                .Select(l => new CourseVR()
+                {
+                  CourseId = l.CourseId,
+                  Name = l.Name
+                }).ToList();
+
+            return courses;
+        }
+
+        [HttpGet("LocationsByCourseId/{courseId}")]
+        public List<LocationVR> GetLocationsByCourseId([FromRoute] int courseId)
+        {
+            List<LocationVR> locations = _locationContext.Location
+                .Where(l => l.CourseId == courseId)
+                .Select(l => new LocationVR()
+                {
+                    LocationId = l.LocationId,
+                    Name = l.Name,
+                    ImagePath = l.ImagePath
+                }).ToList();
+
+            return locations;
+        }
+
         [HttpGet("AllLocations")]
         public List<LocationVR> GetAllLocations()
         {
@@ -43,7 +73,6 @@ namespace ImmersiveQuiz.ApiControllers
             return locations;
         }
 
-        // GET api/<controller>/5
         [HttpGet("AllQuestions")]
         public List<QuestionVR> GetAllQuestions()
         {
