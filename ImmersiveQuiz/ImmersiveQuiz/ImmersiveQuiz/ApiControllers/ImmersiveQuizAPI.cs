@@ -132,12 +132,14 @@ namespace ImmersiveQuiz.ApiControllers
 
         // POST api/<controller>
         [HttpPost("SubmitScore")]
-        public void Post([FromBody] SubmitScore submitScore)
+        public void Post([FromBody] Score submitScore)
         {
             if (submitScore.PointScore < 0)
             {
                 throw new InvalidOperationException();
             }
+
+
         }
   
             // PUT api/<controller>/5

@@ -38,6 +38,9 @@ namespace ImmersiveQuiz
             {
                 options.AddPolicy("BasicAuthentication", new AuthorizationPolicyBuilder("BasicAuthentication").RequireAuthenticatedUser().Build());
             });
+
+            services.AddDbContext<ScoreContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("ScoreContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

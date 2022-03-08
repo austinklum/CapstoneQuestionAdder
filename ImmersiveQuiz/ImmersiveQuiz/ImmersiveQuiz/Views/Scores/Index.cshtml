@@ -1,0 +1,53 @@
+﻿@model IEnumerable<ImmersiveQuiz.Models.Score>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeScore)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PointScore)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CourseId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeScore)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PointScore)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ScoreId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ScoreId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ScoreId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

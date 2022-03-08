@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace ImmersiveQuiz.Models
 {
-    public class SubmitScore
+    public class Score
     {
-        public string Name { get; set; }
+        public int ScoreId { get; set; }
+        public string StudentId { get; set; }
 
         public int CourseId { get; set; }
 
