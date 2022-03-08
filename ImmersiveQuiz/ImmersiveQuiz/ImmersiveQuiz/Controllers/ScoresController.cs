@@ -20,9 +20,17 @@ namespace ImmersiveQuiz.Controllers
         }
 
         // GET: Scores
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id) // Passing in courseId
         {
-            return View(await _context.Score.ToListAsync());
+            var scores = from score in _context.Score
+                         select score;
+
+            if (!id.HasValue)
+            {
+                scores = scores.Where(score => score.CourseId == id);
+            }
+
+            return View(await scores.ToListAsync());
         }
 
         // GET: Scores/Details/5

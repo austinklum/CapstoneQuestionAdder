@@ -12,9 +12,9 @@ namespace ImmersiveQuiz.Models
 
         public int CourseId { get; set; }
 
-        public float TimeScore { get; set; }
-        public float PointScore { get; set; }
+        public decimal TimeScore { get; set; }
+        public decimal PointScore { get; set; }
 
-        public float TotalScore { get { return TimeScore + PointScore; } }
+        public decimal TotalScore { get { return TimeScore + PointScore; } }
     }
 }

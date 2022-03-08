@@ -27,6 +27,9 @@
             <td>
                 <a class="badge large-badge bg-primary text-light" asp-action="Details" asp-route-id="@item.CourseId">Details</a>
             </td>
+            <td>
+                <a class="badge large-badge bg-primary text-success" asp-controller="Scores" asp-action="Index" asp-route-id="@item.CourseId">Scores</a>
+            </td>
         </tr>
 }
     </tbody>
