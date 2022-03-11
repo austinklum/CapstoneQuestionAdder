@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ImmersiveQuiz.Models.Score>
+﻿@model ImmersiveQuiz.Models.CourseScoreViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -7,34 +7,31 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" asp-route-id="@Model.Course.CourseId">Create New</a>
+</p>
+<p>
+    @Html.DisplayFor(model => model.Course.Name)
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.StudentId)
+                @Html.DisplayNameFor(model => model.Scores.First().StudentId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CourseId)
+                @Html.DisplayNameFor(model => model.Scores.First().TimeScore)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TimeScore)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PointScore)
+                @Html.DisplayNameFor(model => model.Scores.First().PointScore)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Scores) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.StudentId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CourseId)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TimeScore)
@@ -44,7 +41,6 @@
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ScoreId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ScoreId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.ScoreId">Delete</a>
             </td>
         </tr>

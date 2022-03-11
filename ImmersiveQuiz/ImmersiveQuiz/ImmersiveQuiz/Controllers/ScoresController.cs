@@ -12,17 +12,19 @@ namespace ImmersiveQuiz.Controllers
 {
     public class ScoresController : Controller
     {
-        private readonly ScoreContext _context;
+        private readonly ScoreContext _scoreContext;
+        private readonly CourseContext _courseContext;
 
-        public ScoresController(ScoreContext context)
+        public ScoresController(ScoreContext context, CourseContext courseContext)
         {
-            _context = context;
+            _scoreContext = context;
+            _courseContext = courseContext;
         }
 
         // GET: Scores
         public async Task<IActionResult> Index(int? id) // Passing in courseId
         {
-            var scores = from score in _context.Score
+            var scores = from score in _scoreContext.Score
                          select score;
 
             if (!id.HasValue)
@@ -30,7 +32,18 @@ namespace ImmersiveQuiz.Controllers
                 scores = scores.Where(score => score.CourseId == id);
             }
 
-            return View(await scores.ToListAsync());
+            var courses = from course in _courseContext.Course
+                         select course;
+
+
+
+            CourseScoreViewModel vm = new CourseScoreViewModel
+            {
+                Scores = await scores.ToListAsync(),
+                Course = await courses.FirstOrDefaultAsync()
+            };
+
+            return View(vm);
         }
 
         // GET: Scores/Details/5
@@ -41,7 +54,7 @@ namespace ImmersiveQuiz.Controllers
                 return NotFound();
             }
 
-            var score = await _context.Score
+            var score = await _scoreContext.Score
                 .FirstOrDefaultAsync(m => m.ScoreId == id);
             if (score == null)
             {
@@ -52,9 +65,15 @@ namespace ImmersiveQuiz.Controllers
         }
 
         // GET: Scores/Create
-        public IActionResult Create()
+        public IActionResult Create(int? id) // passing in courseId
         {
-            return View();
+
+            Score score = new Score()
+            {
+                CourseId = id ?? 0
+            };
+
+            return View(score);
         }
 
         // POST: Scores/Create
@@ -66,9 +85,9 @@ namespace ImmersiveQuiz.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(score);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                _scoreContext.Add(score);
+                await _scoreContext.SaveChangesAsync();
+                return RedirectToAction("Index", "Scores", new { id = score.CourseId });
             }
             return View(score);
         }
@@ -81,7 +100,7 @@ namespace ImmersiveQuiz.Controllers
                 return NotFound();
             }
 
-            var score = await _context.Score.FindAsync(id);
+            var score = await _scoreContext.Score.FindAsync(id);
             if (score == null)
             {
                 return NotFound();
@@ -105,8 +124,8 @@ namespace ImmersiveQuiz.Controllers
             {
                 try
                 {
-                    _context.Update(score);
-                    await _context.SaveChangesAsync();
+                    _scoreContext.Update(score);
+                    await _scoreContext.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -119,7 +138,7 @@ namespace ImmersiveQuiz.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Scores", new { id = score.CourseId });
             }
             return View(score);
         }
@@ -132,7 +151,7 @@ namespace ImmersiveQuiz.Controllers
                 return NotFound();
             }
 
-            var score = await _context.Score
+            var score = await _scoreContext.Score
                 .FirstOrDefaultAsync(m => m.ScoreId == id);
             if (score == null)
             {
@@ -147,15 +166,15 @@ namespace ImmersiveQuiz.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var score = await _context.Score.FindAsync(id);
-            _context.Score.Remove(score);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var score = await _scoreContext.Score.FindAsync(id);
+            _scoreContext.Score.Remove(score);
+            await _scoreContext.SaveChangesAsync();
+            return RedirectToAction("Index", "Scores", new { id = score.CourseId });
         }
 
         private bool ScoreExists(int id)
         {
-            return _context.Score.Any(e => e.ScoreId == id);
+            return _scoreContext.Score.Any(e => e.ScoreId == id);
         }
     }
 }
