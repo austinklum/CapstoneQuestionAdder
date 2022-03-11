@@ -7,7 +7,8 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create" asp-route-id="@Model.Course.CourseId">Create New</a>
+    <a class="badge large-badge bg-success text-light" asp-action="Create" asp-route-id="@Model.Course.CourseId">Create New</a> |
+    <a class="badge large-badge bg-secondary text-light" asp-controller="Courses" asp-action="Details" asp-route-id="@Model.Course.CourseId">Back to Course</a>
 </p>
 <p>
     @Html.DisplayFor(model => model.Course.Name)
@@ -40,8 +41,8 @@
                 @Html.DisplayFor(modelItem => item.PointScore)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ScoreId">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.ScoreId">Delete</a>
+                <a class="badge large-badge bg-primary text-light" asp-action="Edit" asp-route-id="@Model.Course.CourseId">Edit</a>
+                <a class="badge large-badge bg-danger text-light" asp-action="Delete" asp-route-id="@Model.Course.CourseId">Delete</a>
             </td>
         </tr>
 }
