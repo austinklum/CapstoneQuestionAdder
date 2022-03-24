@@ -136,6 +136,10 @@ namespace ImmersiveQuiz.ApiControllers
         [HttpPost("SubmitScore")]
         public async Task PostAsync([FromBody] Score submitScore)
         {
+            if (!TryValidateModel(submitScore, nameof(submitScore)))
+            {
+                return;
+            }
             _scoreContext.Add(submitScore);
             await _scoreContext.SaveChangesAsync();
         }
