@@ -19,7 +19,8 @@
     </dl>
 </div>
 <div class="mb-4">
-    <a class="badge large-badge bg-secondary text-light" asp-action="Index">Back to List</a> 
+    <a class="badge large-badge bg-secondary text-light" asp-action="Index">Back to List</a> |
+    <a class="badge large-badge bg-success text-light" asp-controller="Scores" asp-action="Index" asp-route-id="@Model.CourseId">Scores</a>
 </div>
 <div>
     <a class="badge large-badge bg-success text-light" asp-action="Create" asp-controller="Locations" asp-route-id="@Model.CourseId">Add Location</a> |

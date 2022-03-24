@@ -1,0 +1,50 @@
+﻿@model ImmersiveQuiz.Models.CourseScoreViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a class="badge large-badge bg-success text-light" asp-action="Create" asp-route-id="@Model.Course.CourseId">Create New</a> |
+    <a class="badge large-badge bg-secondary text-light" asp-controller="Courses" asp-action="Details" asp-route-id="@Model.Course.CourseId">Back to Course</a>
+</p>
+<p>
+    @Html.DisplayFor(model => model.Course.Name)
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Scores.First().StudentId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Scores.First().TimeScore)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Scores.First().PointScore)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Scores) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeScore)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PointScore)
+            </td>
+            <td>
+                <a class="badge large-badge bg-primary text-light" asp-action="Edit" asp-route-id="@Model.Course.CourseId">Edit</a>
+                <a class="badge large-badge bg-danger text-light" asp-action="Delete" asp-route-id="@Model.Course.CourseId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

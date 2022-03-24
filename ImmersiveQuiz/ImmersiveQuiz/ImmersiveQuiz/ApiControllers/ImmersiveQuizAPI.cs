@@ -21,13 +21,15 @@ namespace ImmersiveQuiz.ApiControllers
         private readonly LocationContext _locationContext;
         private readonly QuestionContext _questionContext;
         private readonly AnswerContext _answerContext;
+        private readonly ScoreContext _scoreContext;
 
-        public ImmersiveQuizAPI(CourseContext courseContext, LocationContext locationContext, QuestionContext questionContext, AnswerContext answerContext)
+        public ImmersiveQuizAPI(CourseContext courseContext, LocationContext locationContext, QuestionContext questionContext, AnswerContext answerContext, ScoreContext scoreContext)
         {
             _courseContext = courseContext;
             _locationContext = locationContext;
             _questionContext = questionContext;
             _answerContext = answerContext;
+            _scoreContext = scoreContext;
         }
 
 
@@ -132,12 +134,14 @@ namespace ImmersiveQuiz.ApiControllers
 
         // POST api/<controller>
         [HttpPost("SubmitScore")]
-        public void Post([FromBody] SubmitScore submitScore)
+        public async Task PostAsync([FromBody] Score submitScore)
         {
-            if (submitScore.PointScore < 0)
+            if (!TryValidateModel(submitScore, nameof(submitScore)))
             {
-                throw new InvalidOperationException();
+                return;
             }
+            _scoreContext.Add(submitScore);
+            await _scoreContext.SaveChangesAsync();
         }
   
             // PUT api/<controller>/5
