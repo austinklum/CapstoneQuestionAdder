@@ -1,14 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using IdentityApplication.Data;
 using ImmersiveQuiz.Data;
 using ImmersiveQuiz.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,14 +31,18 @@ namespace ImmersiveQuiz
             services.AddDbContext<LocationContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QuestionContext")));
             services.AddDbContext<CourseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QuestionContext")));
             services.AddDbContext<ScoreContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QuestionContext")));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QuestionContext")));
             services.AddAuthentication().AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", options => { });
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("BasicAuthentication", new AuthorizationPolicyBuilder("BasicAuthentication").RequireAuthenticatedUser().Build());
             });
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+              .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddDbContext<ScoreContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("ScoreContext")));
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
