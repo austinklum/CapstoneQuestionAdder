@@ -1,4 +1,3 @@
-using IdentityApplication.Data;
 using ImmersiveQuiz.Data;
 using ImmersiveQuiz.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -38,7 +37,7 @@ namespace ImmersiveQuiz
                 options.AddPolicy("BasicAuthentication", new AuthorizationPolicyBuilder("BasicAuthentication").RequireAuthenticatedUser().Build());
             });
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-              .AddEntityFrameworkStores<ApplicationDbContext>();
+                    .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddDbContext<ScoreContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("ScoreContext")));
@@ -62,7 +61,7 @@ namespace ImmersiveQuiz
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
