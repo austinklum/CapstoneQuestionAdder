@@ -42,6 +42,8 @@ namespace ImmersiveQuiz
 
             services.AddDbContext<ScoreContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("ScoreContext")));
+
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,6 +64,7 @@ namespace ImmersiveQuiz
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -69,6 +72,7 @@ namespace ImmersiveQuiz
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }
