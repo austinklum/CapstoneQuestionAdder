@@ -7,6 +7,11 @@
   <ItemGroup>
     <Compile Remove="Migrations\AuthDb\20220402195447_InitialIdentity.cs" />
     <Compile Remove="Migrations\AuthDb\20220402195447_InitialIdentity.Designer.cs" />
+    <Compile Remove="TagHelper\RoleUserTH.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="TagHelper\RoleUserTH.cs" />
   </ItemGroup>
 
   <ItemGroup>

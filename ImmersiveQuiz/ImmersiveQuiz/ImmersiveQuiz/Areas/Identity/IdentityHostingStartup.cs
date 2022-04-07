@@ -21,7 +21,8 @@ namespace ImmersiveQuiz.Areas.Identity
                         context.Configuration.GetConnectionString("AuthDbContextConnection")));
 
                 services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
-                    .AddEntityFrameworkStores<AuthDbContext>();
+                        .AddRoles<IdentityRole>()
+                        .AddEntityFrameworkStores<AuthDbContext>();
             });
         }
     }
