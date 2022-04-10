@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,15 +10,15 @@ namespace ImmersiveQuiz.Controllers
 {
     public class RoleController : Controller
     {
-        private RoleManager<IdentityRole> roleManager;
-        private UserManager<ApplicationUser> userManager;
-        public RoleController(RoleManager<IdentityRole> roleMgr, UserManager<ApplicationUser> userMrg)
+        private RoleManager<IdentityRole> _roleManager;
+        private UserManager<ApplicationUser> _userManager;
+        public RoleController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
         {
-            roleManager = roleMgr;
-            userManager = userMrg;
+            _roleManager = roleManager;
+            _userManager = userManager;
         }
 
-        public ViewResult Index() => View(roleManager.Roles);
+        public ViewResult Index() => View(_roleManager.Roles);
         public IActionResult Create() => View();
 
         [HttpPost]
@@ -34,7 +26,7 @@ namespace ImmersiveQuiz.Controllers
         {
             if (ModelState.IsValid)
             {
-                IdentityResult result = await roleManager.CreateAsync(new IdentityRole(name));
+                IdentityResult result = await _roleManager.CreateAsync(new IdentityRole(name));
                 if (result.Succeeded)
                     return RedirectToAction("Index");
                 else
@@ -45,10 +37,10 @@ namespace ImmersiveQuiz.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
-            IdentityRole role = await roleManager.FindByIdAsync(id);
+            IdentityRole role = await _roleManager.FindByIdAsync(id);
             if (role != null)
             {
-                IdentityResult result = await roleManager.DeleteAsync(role);
+                IdentityResult result = await _roleManager.DeleteAsync(role);
                 if (result.Succeeded)
                     return RedirectToAction("Index");
                 else
@@ -56,21 +48,21 @@ namespace ImmersiveQuiz.Controllers
             }
             else
                 ModelState.AddModelError("", "No role found");
-            return View("Index", roleManager.Roles);
+            return View("Index", _roleManager.Roles);
         }
-        public async Task<IActionResult> Update(string id)
+        public async Task<IActionResult> Update(string role)
         {
-            IdentityRole role = await roleManager.FindByIdAsync(id);
+            IdentityRole identityRole = await _roleManager.FindByNameAsync(role);
             List<ApplicationUser> members = new List<ApplicationUser>();
             List<ApplicationUser> nonMembers = new List<ApplicationUser>();
-            foreach (ApplicationUser user in userManager.Users)
+            foreach (ApplicationUser user in _userManager.Users)
             {
-                var list = await userManager.IsInRoleAsync(user, role.Name) ? members : nonMembers;
+                var list = await _userManager.IsInRoleAsync(user, identityRole.Name) ? members : nonMembers;
                 list.Add(user);
             }
             return View(new RoleEdit
             {
-                Role = role,
+                Role = identityRole,
                 Members = members,
                 NonMembers = nonMembers
             });
@@ -84,20 +76,20 @@ namespace ImmersiveQuiz.Controllers
             {
                 foreach (string userId in model.AddIds ?? new string[] { })
                 {
-                    ApplicationUser user = await userManager.FindByIdAsync(userId);
+                    ApplicationUser user = await _userManager.FindByIdAsync(userId);
                     if (user != null)
                     {
-                        result = await userManager.AddToRoleAsync(user, model.RoleName);
+                        result = await _userManager.AddToRoleAsync(user, model.RoleName);
                         if (!result.Succeeded)
                             Errors(result);
                     }
                 }
                 foreach (string userId in model.DeleteIds ?? new string[] { })
                 {
-                    ApplicationUser user = await userManager.FindByIdAsync(userId);
+                    ApplicationUser user = await _userManager.FindByIdAsync(userId);
                     if (user != null)
                     {
-                        result = await userManager.RemoveFromRoleAsync(user, model.RoleName);
+                        result = await _userManager.RemoveFromRoleAsync(user, model.RoleName);
                         if (!result.Succeeded)
                             Errors(result);
                     }
@@ -105,9 +97,9 @@ namespace ImmersiveQuiz.Controllers
             }
 
             if (ModelState.IsValid)
-                return RedirectToAction(nameof(Index));
+                return Redirect("../Identity/Account/Manage/");
             else
-                return await Update(model.RoleId);
+                return await Update(model.RoleName);
         }
         private void Errors(IdentityResult result)
         {
