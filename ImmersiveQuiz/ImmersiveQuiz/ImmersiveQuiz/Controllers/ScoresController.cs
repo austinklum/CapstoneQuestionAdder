@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ImmersiveQuiz.Data;
 using ImmersiveQuiz.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ImmersiveQuiz.Controllers
 {
+    [Authorize(Roles = "Verified")]
     public class ScoresController : Controller
     {
         private readonly ScoreContext _scoreContext;

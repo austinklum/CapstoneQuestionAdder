@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ImmersiveQuiz.Data;
 using ImmersiveQuiz.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ImmersiveQuiz.Controllers
 {
+    [Authorize(Roles = "Verified")]
     public class CoursesController : Controller
     {
         private readonly CourseContext _courseContext;
@@ -17,6 +19,7 @@ namespace ImmersiveQuiz.Controllers
         private readonly QuestionContext _questionContext;
         private readonly AnswerContext _answerContext;
 
+        
         public CoursesController(CourseContext context, LocationContext locationContext, QuestionContext questionContext, AnswerContext answerContext)
         {
             _courseContext = context;
