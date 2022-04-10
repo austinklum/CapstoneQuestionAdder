@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ImmersiveQuiz.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Verified")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

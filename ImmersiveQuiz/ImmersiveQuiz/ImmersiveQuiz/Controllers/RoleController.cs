@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ImmersiveQuiz.Areas.Identity.Data;
 using ImmersiveQuiz.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ImmersiveQuiz.Controllers
 {
+    [Authorize(Roles = "Verified")]
     public class RoleController : Controller
     {
         private RoleManager<IdentityRole> _roleManager;

@@ -12,9 +12,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Components;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ImmersiveQuiz.Controllers
 {
+    [Authorize(Roles = "Verified")]
     public class LocationsController : Controller
     {
         private readonly LocationContext _locationContext;
@@ -22,6 +24,7 @@ namespace ImmersiveQuiz.Controllers
         private readonly AnswerContext _answerContext;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
+      
         public LocationsController(LocationContext context, QuestionContext questionContext, AnswerContext answerContext, IWebHostEnvironment hostEnvironment)
         {
             _locationContext = context;
