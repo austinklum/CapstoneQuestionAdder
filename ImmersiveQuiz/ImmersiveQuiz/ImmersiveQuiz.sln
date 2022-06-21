@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImmersiveQuiz", "ImmersiveQuiz\ImmersiveQuiz.csproj", "{6C7D7EF1-EB83-4E64-88E1-172C5CD68A40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImmersiveQuiz", "ImmersiveQuiz\ImmersiveQuiz.csproj", "{6C7D7EF1-EB83-4E64-88E1-172C5CD68A40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{5847905C-3A61-4238-B725-5AA141143D8A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{6C7D7EF1-EB83-4E64-88E1-172C5CD68A40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C7D7EF1-EB83-4E64-88E1-172C5CD68A40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C7D7EF1-EB83-4E64-88E1-172C5CD68A40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5847905C-3A61-4238-B725-5AA141143D8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5847905C-3A61-4238-B725-5AA141143D8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5847905C-3A61-4238-B725-5AA141143D8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5847905C-3A61-4238-B725-5AA141143D8A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

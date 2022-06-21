@@ -32,6 +32,10 @@ namespace ImmersiveQuiz.ApiControllers
             _scoreContext = scoreContext;
         }
 
+        public ImmersiveQuizAPI()
+        {
+
+        }
 
         [HttpGet("AllCourses")]
         public List<CourseVR> GetAllCourses()
@@ -134,14 +138,15 @@ namespace ImmersiveQuiz.ApiControllers
 
         // POST api/<controller>
         [HttpPost("SubmitScore")]
-        public async Task PostAsync([FromBody] Score submitScore)
+        public async Task<IActionResult> SubmitScore([FromBody] Score submitScore)
         {
-            if (!TryValidateModel(submitScore, nameof(submitScore)))
+            if (submitScore.PointScore < 0 || submitScore.TimeScore < 0)
             {
-                return;
+                return new BadRequestObjectResult("Invalid score");
             }
             _scoreContext.Add(submitScore);
             await _scoreContext.SaveChangesAsync();
+            return new OkResult();
         }
   
             // PUT api/<controller>/5
