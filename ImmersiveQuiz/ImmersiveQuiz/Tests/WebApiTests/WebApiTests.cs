@@ -33,7 +33,7 @@ namespace Tests.WebApiTests
         }
 
         [Fact]
-        public async Task Create_InvalidModel_ReturnsFalseAsync()
+        public async Task Post_InvalidModel_ReturnsBadRequest()
         {
             Score score = new Score()
             {
