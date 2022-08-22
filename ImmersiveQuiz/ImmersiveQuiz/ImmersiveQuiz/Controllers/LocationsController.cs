@@ -144,29 +144,32 @@ namespace ImmersiveQuiz.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(LocationImageViewModel vm)
+        public async Task<IActionResult> Edit(LocationImageViewModel vm, int id) // passing in courseId
         {
-            if (ModelState.IsValid)
+           var location = _locationContext.Location.Find(vm.LocationId);
+            try
             {
-                try
-                {
-                    _locationContext.Update(vm);
-                    await _locationContext.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!LocationExists(vm.LocationId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction("Details", "Courses", new { id = vm.CourseId });
+
+                location.Name = vm.Name;
+                location.ImageGuid = UploadImage(vm.LocationImage);
+                location.ImageExtension = Path.GetExtension(vm.LocationImage.FileName);
+
+                _locationContext.Update(location);
+                await _locationContext.SaveChangesAsync();
             }
-            return View(vm);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!LocationExists(vm.LocationId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction("Details", "Courses", new { id = location.CourseId });
+            
         }
 
         // GET: Locations/Delete/5

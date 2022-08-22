@@ -29,13 +29,14 @@ namespace ImmersiveQuiz.Controllers
             var scores = from score in _scoreContext.Score
                          select score;
 
-            if (!id.HasValue)
+            if (id.HasValue)
             {
                 scores = scores.Where(score => score.CourseId == id);
             }
 
             var courses = from course in _courseContext.Course
-                         select course;
+                          where course.CourseId == id
+                          select course;
 
 
 
@@ -85,7 +86,7 @@ namespace ImmersiveQuiz.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ScoreId,StudentId,CourseId,TimeScore,PointScore")] Score score)
         {
-            if (ModelState.IsValid)
+             if (ModelState.IsValid)
             {
                 _scoreContext.Add(score);
                 await _scoreContext.SaveChangesAsync();

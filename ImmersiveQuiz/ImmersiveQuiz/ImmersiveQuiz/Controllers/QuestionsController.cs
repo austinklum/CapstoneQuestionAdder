@@ -156,7 +156,7 @@ namespace ImmersiveQuiz.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("QuestionId,Content")] Question question)
+        public async Task<IActionResult> Edit(int id, [Bind("QuestionId,Content,LocationId")] Question question)
         {
             if (id != question.QuestionId)
             {
@@ -185,7 +185,7 @@ namespace ImmersiveQuiz.Controllers
                         throw;
                     }
                 }
-                var location = _locationContext.Location.Find(question.LocationId);
+                var location = _locationContext.Location.Find(ques.LocationId);
                 if (location == null)
                 {
                     return NotFound();

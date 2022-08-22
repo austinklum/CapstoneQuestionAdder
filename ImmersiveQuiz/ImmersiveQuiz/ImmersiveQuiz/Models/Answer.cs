@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace ImmersiveQuiz.Models
         public int AnswerId { get; set; }
 
         [DisplayName("Answer")]
+        [Required(ErrorMessage = "Please add the answer content")]
         public string Content { get; set; }
 
         public int QuestionId { get; set; }

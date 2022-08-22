@@ -41,8 +41,8 @@
                 @Html.DisplayFor(modelItem => item.PointScore)
             </td>
             <td>
-                <a class="badge large-badge bg-primary text-light" asp-action="Edit" asp-route-id="@Model.Course.CourseId">Edit</a>
-                <a class="badge large-badge bg-danger text-light" asp-action="Delete" asp-route-id="@Model.Course.CourseId">Delete</a>
+                <a class="badge large-badge bg-primary text-light" asp-action="Edit" asp-route-id="@item.ScoreId">Edit</a>
+                <a class="badge large-badge bg-danger text-light" asp-action="Delete" asp-route-id="@item.ScoreId">Delete</a>
             </td>
         </tr>
 }

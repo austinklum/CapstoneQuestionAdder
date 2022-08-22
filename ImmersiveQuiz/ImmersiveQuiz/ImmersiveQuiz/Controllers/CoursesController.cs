@@ -120,7 +120,7 @@ namespace ImmersiveQuiz.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Details));
+                return RedirectToAction("Details", "Courses", new { id = course.CourseId });
             }
             return View(course);
         }
