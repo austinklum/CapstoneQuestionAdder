@@ -44,6 +44,11 @@ namespace ImmersiveQuiz
                     options.UseSqlServer(Configuration.GetConnectionString("ScoreContext")));
 
             services.AddRazorPages();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v2", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Web API", Version = "v2" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,6 +71,12 @@ namespace ImmersiveQuiz
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v2/swagger.json", "Web API");
+            });
 
             app.UseEndpoints(endpoints =>
             {
